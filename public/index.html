@@ -1,1 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbearia NT</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="logo" href="#home">BARBEARIA NT</a>
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+  <nav id="menu">
+    <a href="#servicos">SERVIÇOS</a>
+    <a href="#manifesto">MANIFESTO</a>
+    <a href="#contato">CONTATO</a>
+    <a class="outline" href="#agendar">AGENDAR</a>
+  </nav>
+</header>
 
+<main>
+<section class="hero" id="home">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="eyebrow">— EST. 2024 — CORTES · BARBA · NEVOU · LUZES</p>
+    <h1>BARBEARIA<br>NT</h1>
+    <p>Onde o corte vira assinatura.<br>Precisão, estilo e atitude.</p>
+    <a class="button light" href="#agendar">AGENDAR HORÁRIO</a>
+    <a class="button ghost" href="#servicos">VER SERVIÇOS</a>
+  </div>
+</section>
+
+<div class="ticker">✦ BARBEARIA NT &nbsp;&nbsp; ✦ CORTES &nbsp;&nbsp; ✦ BARBA &nbsp;&nbsp; ✦ ESTILO</div>
+
+<section class="intro" id="servicos">
+  <p class="eyebrow">/ NOSSOS SERVIÇOS</p>
+  <h2>O QUE FAZEMOS</h2>
+  <p class="lead">Do corte na tesoura à descoloração completa. Cada serviço com preço justo e acabamento de assinatura.</p>
+</section>
+
+<section class="service-list" id="serviceList"></section>
+
+<section class="booking" id="agendar">
+  <p class="eyebrow">/ AGENDAMENTO ONLINE</p>
+  <h2>RESERVE SEU HORÁRIO</h2>
+  <p class="lead">Rápido, seguro e sem espera. Confirmação por e-mail e WhatsApp.</p>
+  <div class="steps"><b>01 SERVIÇO</b><span>02 DATA</span><span>03 HORÁRIO</span><span>04 DADOS</span></div>
+  <div id="bookingApp"></div>
+</section>
+
+<section class="intro" id="manifesto">
+  <p class="eyebrow">/ MANIFESTO</p>
+  <h2>PRECISÃO.<br>ESTILO.<br>ATITUDE.</h2>
+  <p class="lead">Um atendimento pensado para quem não abre mão do acabamento.</p>
+</section>
+
+<section class="contact" id="contato">
+  <p class="eyebrow">/ CONTATO</p>
+  <h2>FALE COM A NT</h2>
+  <p>Agende online ou entre em contato pelo WhatsApp.</p>
+</section>
+</main>
+
+<div class="modal" id="adminModal">
+  <div class="modal-card">
+    <button class="close" id="closeAdmin">×</button>
+    <p class="eyebrow">/ ÁREA RESTRITA</p>
+    <h2>LOGIN</h2>
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="E-mail" required>
+      <input id="password" type="password" placeholder="Senha" required>
+      <button class="button light" type="submit">ENTRAR</button>
+      <p id="loginError" class="error"></p>
+    </form>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
