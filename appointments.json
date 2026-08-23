@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1787456462234",
+    "serviceId": "corte",
+    "service": "Corte",
+    "duration": 30,
+    "price": 40,
+    "date": "2026-09-04",
+    "time": "09:00",
+    "name": "MOTA",
+    "phone": "17996097516",
+    "email": "admenzofusion@gmail.com",
+    "status": "confirmado",
+    "createdAt": "2026-08-23T03:41:02.234Z"
+  }
+]
