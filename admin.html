@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — Barbearia NT</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<div class="admin">
+  <div class="admin-head"><div><p class="eyebrow">/ PAINEL ADMINISTRATIVO</p><h1>AGENDAMENTOS</h1></div><button class="logout" id="logout">SAIR</button></div>
+  <div class="stats"><div class="stat"><small>HOJE</small><b id="today">0</b><span>agendamentos</span></div><div class="stat"><small>PRÓXIMOS</small><b id="upcoming">0</b><span>agendamentos</span></div><div class="stat"><small>FATURAMENTO</small><b id="revenue">R$ 0</b><span>confirmados</span></div></div>
+  <div class="calendar" id="calendar"></div>
+</div>
+<script>
+const token=sessionStorage.getItem("adminToken");
+if(!token) location.href="/";
+const cal=document.getElementById("calendar");
+function money(n){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(n)}
+async function load(){
+ const r=await fetch("/api/admin/appointments",{headers:{Authorization:"Bearer "+token}});
+ if(r.status===401){sessionStorage.removeItem("adminToken");location.href="/";return}
+ const data=await r.json(), today=new Date().toISOString().slice(0,10);
+ document.getElementById("today").textContent=data.filter(a=>a.date===today&&a.status!=="cancelado").length;
+ document.getElementById("upcoming").textContent=data.filter(a=>a.date>=today&&a.status!=="cancelado").length;
+ document.getElementById("revenue").textContent=money(data.filter(a=>a.status==="confirmado").reduce((x,a)=>x+a.price,0));
+ const groups={}; data.forEach(a=>(groups[a.date]??=[]).push(a));
+ cal.innerHTML=Object.entries(groups).map(([date,items])=>`<section class="day"><div class="day-head"><b>${date.split("-").reverse().join("/")}</b><span>${items.length} cliente(s)</span></div>${items.map(a=>`<div class="appt"><b>${a.time} — ${a.name}</b><br><span>${a.service} · ${money(a.price)} · ${a.duration} min</span><br><small>WhatsApp: ${a.phone}${a.email?" · "+a.email:""} · ${a.status}</small><div class="appt-actions"><button onclick="status('${a.id}','confirmado')">CONFIRMAR</button><button onclick="status('${a.id}','cancelado')">CANCELAR</button><button onclick="removeAppt('${a.id}')">EXCLUIR</button></div></div>`).join("")}</section>`).join("") || "<p>Nenhum agendamento ainda.</p>";
+}
+async function status(id,status){await fetch("/api/admin/appointments/"+id,{method:"PATCH",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({status})});load()}
+async function removeAppt(id){if(confirm("Excluir este agendamento?")){await fetch("/api/admin/appointments/"+id,{method:"DELETE",headers:{Authorization:"Bearer "+token}});load()}}
+document.getElementById("logout").onclick=()=>{sessionStorage.removeItem("adminToken");location.href="/"}
+load();
+</script>
+</body></html>
