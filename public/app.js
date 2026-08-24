@@ -51,7 +51,25 @@ function renderDateStep() {
   $("#finish").onclick = async () => {
     const payload = {serviceId:selected,date:$("#date").value,time:$("#time").value,name:$("#name").value.trim(),phone:$("#phone").value.trim(),email:$("#clientEmail").value.trim()};
     if(!payload.date||!payload.time||!payload.name||!payload.phone){$("#bookError").textContent="Preencha data, horário, nome e WhatsApp.";return;}
-    const r = await fetch("/api/appointments",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    const token = localStorage.getItem("clientToken");
+
+if (!token) {
+  $("#bookError").textContent = "Faça login ou crie uma conta antes de agendar.";
+  return;
+}
+
+const r = await fetch("/api/appointments/authenticated", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+  },
+  body: JSON.stringify({
+    serviceId: selected,
+    date: $("#date").value,
+    time: $("#time").value
+  })
+});
     const data = await r.json();
     if(!r.ok){$("#bookError").textContent=data.error;return;}
     const svc = services.find(s=>s[0]===selected);
