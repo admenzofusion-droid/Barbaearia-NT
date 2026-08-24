@@ -89,4 +89,137 @@ $("#loginForm").onsubmit=async e=>{
   if(!r.ok){$("#loginError").textContent=d.error;return;}
   sessionStorage.setItem("adminToken",d.token);
   location.href="/admin.html";
+  // ==============================
+// LOGIN E CADASTRO DO CLIENTE
+// ==============================
+
+const clientModal = $("#clientModal");
+const clientLoginBtn = $("#clientLoginBtn");
+const closeClient = $("#closeClient");
+
+const clientLoginForm = $("#clientLoginForm");
+const clientRegisterForm = $("#clientRegisterForm");
+
+const clientSwitch = $("#clientSwitch");
+const clientSwitchText = $("#clientSwitchText");
+const clientTitle = $("#clientTitle");
+
+clientLoginBtn.onclick = e => {
+  e.preventDefault();
+  clientModal.classList.add("open");
+};
+
+closeClient.onclick = () => {
+  clientModal.classList.remove("open");
+};
+
+clientModal.onclick = e => {
+  if (e.target === clientModal) {
+    clientModal.classList.remove("open");
+  }
+};
+
+// Alternar entre LOGIN e CADASTRO
+clientSwitch.onclick = () => {
+  const registering = clientRegisterForm.style.display !== "none";
+
+  if (registering) {
+    clientRegisterForm.style.display = "none";
+    clientLoginForm.style.display = "block";
+
+    clientTitle.textContent = "ENTRAR";
+    clientSwitchText.textContent = "Ainda não tem conta?";
+    clientSwitch.textContent = "CRIAR CONTA";
+  } else {
+    clientLoginForm.style.display = "none";
+    clientRegisterForm.style.display = "block";
+
+    clientTitle.textContent = "CRIAR CONTA";
+    clientSwitchText.textContent = "Já tem uma conta?";
+    clientSwitch.textContent = "ENTRAR";
+  }
+};
+
+// LOGIN DO CLIENTE
+clientLoginForm.onsubmit = async e => {
+  e.preventDefault();
+
+  $("#clientError").textContent = "";
+
+  const email = $("#clientEmail").value.trim();
+  const password = $("#clientPassword").value;
+
+  try {
+    const r = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    });
+
+    const data = await r.json();
+
+    if (!r.ok) {
+      $("#clientError").textContent = data.error || "Erro ao fazer login.";
+      return;
+    }
+
+    localStorage.setItem("clientToken", data.token);
+
+    clientModal.classList.remove("open");
+
+    alert("Login realizado com sucesso!");
+
+  } catch (err) {
+    console.error(err);
+    $("#clientError").textContent = "Erro de conexão com o servidor.";
+  }
+};
+
+// CRIAR CONTA
+clientRegisterForm.onsubmit = async e => {
+  e.preventDefault();
+
+  $("#registerError").textContent = "";
+
+  const name = $("#registerName").value.trim();
+  const email = $("#registerEmail").value.trim();
+  const phone = $("#registerPhone").value.trim();
+  const password = $("#registerPassword").value;
+
+  try {
+    const r = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        password
+      })
+    });
+
+    const data = await r.json();
+
+    if (!r.ok) {
+      $("#registerError").textContent = data.error || "Erro ao criar conta.";
+      return;
+    }
+
+    localStorage.setItem("clientToken", data.token);
+
+    clientModal.classList.remove("open");
+
+    alert("Conta criada com sucesso!");
+
+  } catch (err) {
+    console.error(err);
+    $("#registerError").textContent = "Erro de conexão com o servidor.";
+  }
 };
