@@ -6,102 +6,285 @@
   <title>Barbearia NT</title>
   <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
+
 <header class="topbar">
   <a class="logo" href="#home">BARBEARIA NT</a>
-  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
   <nav id="menu">
-  <a href="#servicos">SERVIÇOS</a>
-  <a href="#manifesto">MANIFESTO</a>
-  <a href="#contato">CONTATO</a>
-  <button type="button" id="clientLoginBtn">ENTRAR</button>
-  <a class="outline" href="#agendar">AGENDAR</a>
-</nav>
+    <a href="#servicos">SERVIÇOS</a>
+    <a href="#manifesto">MANIFESTO</a>
+    <a href="#contato">CONTATO</a>
+    <button type="button" id="clientLoginBtn">ENTRAR</button>
+    <a class="outline" href="#agendar">AGENDAR</a>
+  </nav>
 </header>
 
+
 <main>
+
 <section class="hero" id="home">
   <div class="hero-overlay"></div>
+
   <div class="hero-content">
     <p class="eyebrow">— EST. 2025 — CORTES · BARBA · NEVOU · LUZES</p>
+
     <h1>BARBEARIA<br>NT</h1>
-    <p>Onde o corte vira assinatura.<br>Precisão, estilo e atitude.</p>
-    <a class="button light" href="#agendar">AGENDAR HORÁRIO</a>
-    <a class="button ghost" href="#servicos">VER SERVIÇOS</a>
+
+    <p>
+      Onde o corte vira assinatura.<br>
+      Precisão, estilo e atitude.
+    </p>
+
+    <a class="button light" href="#agendar">
+      AGENDAR HORÁRIO
+    </a>
+
+    <a class="button ghost" href="#servicos">
+      VER SERVIÇOS
+    </a>
   </div>
 </section>
 
-<div class="ticker">✦ BARBEARIA NT &nbsp;&nbsp; ✦ CORTES &nbsp;&nbsp; ✦ BARBA &nbsp;&nbsp; ✦ ESTILO</div>
+
+<div class="ticker">
+  ✦ BARBEARIA NT
+  &nbsp;&nbsp;
+  ✦ CORTES
+  &nbsp;&nbsp;
+  ✦ BARBA
+  &nbsp;&nbsp;
+  ✦ ESTILO
+</div>
+
 
 <section class="intro" id="servicos">
   <p class="eyebrow">/ NOSSOS SERVIÇOS</p>
+
   <h2>O QUE FAZEMOS</h2>
-  <p class="lead">Do corte na tesoura à descoloração completa. Cada serviço com preço justo e acabamento de assinatura.</p>
+
+  <p class="lead">
+    Do corte na tesoura à descoloração completa.
+    Cada serviço com preço justo e acabamento de assinatura.
+  </p>
 </section>
+
 
 <section class="service-list" id="serviceList"></section>
 
+
 <section class="booking" id="agendar">
+
   <p class="eyebrow">/ AGENDAMENTO ONLINE</p>
+
   <h2>RESERVE SEU HORÁRIO</h2>
-  <p class="lead">Rápido, seguro e sem espera. Confirmação por e-mail e WhatsApp.</p>
-  <div class="steps"><b>01 SERVIÇO</b><span>02 DATA</span><span>03 HORÁRIO</span><span>04 DADOS</span></div>
+
+  <p class="lead">
+    Rápido, seguro e sem espera.
+    Confirmação por e-mail e WhatsApp.
+  </p>
+
+  <div class="steps">
+    <b>01 SERVIÇO</b>
+    <span>02 DATA</span>
+    <span>03 HORÁRIO</span>
+    <span>04 DADOS</span>
+  </div>
+
   <div id="bookingApp"></div>
+
 </section>
+
 
 <section class="intro" id="manifesto">
+
   <p class="eyebrow">/ MANIFESTO</p>
-  <h2>PRECISÃO.<br>ESTILO.<br>ATITUDE.</h2>
-  <p class="lead">Um atendimento pensado para quem não abre mão do acabamento.</p>
+
+  <h2>
+    PRECISÃO.<br>
+    ESTILO.<br>
+    ATITUDE.
+  </h2>
+
+  <p class="lead">
+    Um atendimento pensado para quem não abre mão do acabamento.
+  </p>
+
 </section>
+
 
 <section class="contact" id="contato">
+
   <p class="eyebrow">/ CONTATO</p>
+
   <h2>FALE COM A NT</h2>
-  <p>Agende online ou entre em contato pelo WhatsApp.</p>
+
+  <p>
+    Agende online ou entre em contato pelo WhatsApp.
+  </p>
+
 </section>
+
 </main>
 
-<div class="modal" id="adminModal">
+
+<!-- ==============================
+     MODAL DO CLIENTE
+     ============================== -->
+
+<div class="modal" id="clientModal">
+
   <div class="modal-card">
+
     <button class="close" id="closeClient">×</button>
 
     <p class="eyebrow">/ ÁREA DO CLIENTE</p>
+
     <h2 id="clientTitle">ENTRAR</h2>
 
-    <form id="clientRegisterForm" style="display:none;">
-  <input id="registerName" type="text" placeholder="Nome completo" required>
 
-  <input id="registerEmail" type="email" placeholder="E-mail" required>
+    <!-- LOGIN DO CLIENTE -->
 
-  <input id="registerPhone" type="tel" placeholder="WhatsApp" required>
+    <form id="clientLoginForm">
 
-  <input id="registerPassword" type="password" placeholder="Senha" required>
+      <input
+        id="clientEmail"
+        type="email"
+        placeholder="E-mail"
+        required
+      >
 
-  <button class="button light" type="submit">CRIAR CONTA</button>
+      <input
+        id="clientPassword"
+        type="password"
+        placeholder="Senha"
+        required
+      >
 
-  <p id="registerError" class="error"></p>
-</form>
+      <button class="button light" type="submit">
+        ENTRAR
+      </button>
 
-    <form id="clientRegisterForm" style="display:none;">
-      <input id="registerName" type="text" placeholder="Nome completo" required>
-      <input id="registerEmail" type="email" placeholder="E-mail" required>
-      <input id="registerPassword" type="password" placeholder="Senha" required>
+      <p id="clientError" class="error"></p>
 
-      <button class="button light" type="submit">CRIAR CONTA</button>
-
-      <p id="registerError" class="error"></p>
     </form>
 
-    <p style="margin-top:20px;">
-      <span id="clientSwitchText">Ainda não tem conta?</span>
-      <button type="button" id="clientSwitch" class="link-button">
+
+    <!-- CADASTRO DO CLIENTE -->
+
+    <form id="clientRegisterForm" style="display:none;">
+
+      <input
+        id="registerName"
+        type="text"
+        placeholder="Nome completo"
+        required
+      >
+
+      <input
+        id="registerEmail"
+        type="email"
+        placeholder="E-mail"
+        required
+      >
+
+      <input
+        id="registerPhone"
+        type="tel"
+        placeholder="WhatsApp"
+        required
+      >
+
+      <input
+        id="registerPassword"
+        type="password"
+        placeholder="Senha"
+        required
+      >
+
+      <button class="button light" type="submit">
         CRIAR CONTA
       </button>
+
+      <p id="registerError" class="error"></p>
+
+    </form>
+
+
+    <!-- TROCAR LOGIN / CADASTRO -->
+
+    <p style="margin-top:20px;">
+
+      <span id="clientSwitchText">
+        Ainda não tem conta?
+      </span>
+
+      <button
+        type="button"
+        id="clientSwitch"
+        class="link-button"
+      >
+        CRIAR CONTA
+      </button>
+
     </p>
+
   </div>
+
 </div>
 
+
+<!-- ==============================
+     MODAL DO ADMINISTRADOR
+     ============================== -->
+
+<div class="modal" id="adminModal">
+
+  <div class="modal-card">
+
+    <button class="close" id="closeAdmin">×</button>
+
+    <p class="eyebrow">/ ÁREA RESTRITA</p>
+
+    <h2>LOGIN</h2>
+
+    <form id="loginForm">
+
+      <input
+        id="email"
+        type="email"
+        placeholder="E-mail"
+        required
+      >
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Senha"
+        required
+      >
+
+      <button class="button light" type="submit">
+        ENTRAR
+      </button>
+
+      <p id="loginError" class="error"></p>
+
+    </form>
+
+  </div>
+
+</div>
+
+
 <script src="/app.js"></script>
+
 </body>
 </html>
