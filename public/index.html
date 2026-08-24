@@ -69,14 +69,19 @@
     <p class="eyebrow">/ ÁREA DO CLIENTE</p>
     <h2 id="clientTitle">ENTRAR</h2>
 
-    <form id="clientLoginForm">
-      <input id="clientEmail" type="email" placeholder="E-mail" required>
-      <input id="clientPassword" type="password" placeholder="Senha" required>
+    <form id="clientRegisterForm" style="display:none;">
+  <input id="registerName" type="text" placeholder="Nome completo" required>
 
-      <button class="button light" type="submit">ENTRAR</button>
+  <input id="registerEmail" type="email" placeholder="E-mail" required>
 
-      <p id="clientError" class="error"></p>
-    </form>
+  <input id="registerPhone" type="tel" placeholder="WhatsApp" required>
+
+  <input id="registerPassword" type="password" placeholder="Senha" required>
+
+  <button class="button light" type="submit">CRIAR CONTA</button>
+
+  <p id="registerError" class="error"></p>
+</form>
 
     <form id="clientRegisterForm" style="display:none;">
       <input id="registerName" type="text" placeholder="Nome completo" required>
