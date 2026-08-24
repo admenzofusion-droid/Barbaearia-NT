@@ -1,7 +1,22 @@
+// ==============================
+// MENU
+// ==============================
+
 const $ = s => document.querySelector(s);
-const menuBtn = $("#menuBtn"), menu = $("#menu");
+
+const menuBtn = $("#menuBtn");
+const menu = $("#menu");
+
 menuBtn.onclick = () => menu.classList.toggle("open");
-document.querySelectorAll("nav a").forEach(a => a.onclick = () => menu.classList.remove("open"));
+
+document.querySelectorAll("nav a").forEach(a => {
+  a.onclick = () => menu.classList.remove("open");
+});
+
+
+// ==============================
+// SERVIÇOS
+// ==============================
 
 const services = [
   ["corte","CORTE","Corte clássico ou moderno, tesoura e máquina, finalização completa.","R$ 40,00","30 MIN"],
@@ -19,7 +34,13 @@ $("#serviceList").innerHTML = services.map(s => `
       <p class="service-desc">${s[2]}</p>
       <div class="price">${s[3]}</div>
     </div>
-  </article>`).join("");
+  </article>
+`).join("");
+
+
+// ==============================
+// AGENDAMENTO
+// ==============================
 
 const booking = $("#bookingApp");
 let selected = null;
@@ -28,68 +49,170 @@ function renderBooking() {
   booking.innerHTML = `
     <div class="booking-grid">
       <h3>ESCOLHA O SERVIÇO</h3>
-      ${services.map(s => `<button class="choice ${selected===s[0]?"selected":""}" data-service="${s[0]}"><strong>${s[1]}</strong><small>${s[4]} · ${s[3]}</small></button>`).join("")}
+
+      ${services.map(s => `
+        <button class="choice ${selected === s[0] ? "selected" : ""}" data-service="${s[0]}">
+          <strong>${s[1]}</strong>
+          <small>${s[4]} · ${s[3]}</small>
+        </button>
+      `).join("")}
+
       <div id="dateStep" style="grid-column:1/-1"></div>
-    </div>`;
-  document.querySelectorAll("[data-service]").forEach(b => b.onclick = () => {selected=b.dataset.service; renderBooking();});
-  if(selected) renderDateStep();
+    </div>
+  `;
+
+  document.querySelectorAll("[data-service]").forEach(b => {
+    b.onclick = () => {
+      selected = b.dataset.service;
+      renderBooking();
+    };
+  });
+
+  if (selected) renderDateStep();
 }
+
 function renderDateStep() {
   $("#dateStep").innerHTML = `
     <div style="margin-top:30px;border-top:1px solid #292929;padding-top:30px">
       <h3>ESCOLHA A DATA E HORÁRIO</h3>
+
       <div class="booking-form">
         <input id="date" type="date" required>
         <input id="time" type="time" required>
         <input id="name" placeholder="Seu nome" required>
         <input id="phone" placeholder="WhatsApp" required>
-        <input id="clientEmail" type="email" placeholder="E-mail (opcional)">
-        <button class="button light" id="finish">CONFIRMAR AGENDAMENTO</button>
+        <input id="bookingEmail" type="email" placeholder="E-mail (opcional)">
+
+        <button class="button light" id="finish">
+          CONFIRMAR AGENDAMENTO
+        </button>
+
         <p id="bookError" class="error"></p>
       </div>
-    </div>`;
+    </div>
+  `;
+
   $("#finish").onclick = async () => {
-    const payload = {serviceId:selected,date:$("#date").value,time:$("#time").value,name:$("#name").value.trim(),phone:$("#phone").value.trim(),email:$("#clientEmail").value.trim()};
-    if(!payload.date||!payload.time||!payload.name||!payload.phone){$("#bookError").textContent="Preencha data, horário, nome e WhatsApp.";return;}
+
+    const payload = {
+      serviceId: selected,
+      date: $("#date").value,
+      time: $("#time").value,
+      name: $("#name").value.trim(),
+      phone: $("#phone").value.trim(),
+      email: $("#bookingEmail").value.trim()
+    };
+
+    if (!payload.date || !payload.time || !payload.name || !payload.phone) {
+      $("#bookError").textContent =
+        "Preencha data, horário, nome e WhatsApp.";
+      return;
+    }
+
     const token = localStorage.getItem("clientToken");
 
-if (!token) {
-  $("#bookError").textContent = "Faça login ou crie uma conta antes de agendar.";
-  return;
-}
+    if (!token) {
+      $("#bookError").textContent =
+        "Faça login ou crie uma conta antes de agendar.";
+      return;
+    }
 
-const r = await fetch("/api/appointments/authenticated", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer " + token
-  },
-  body: JSON.stringify({
-    serviceId: selected,
-    date: $("#date").value,
-    time: $("#time").value
-  })
-});
-    const data = await r.json();
-    if(!r.ok){$("#bookError").textContent=data.error;return;}
-    const svc = services.find(s=>s[0]===selected);
-    booking.innerHTML=`<div class="success"><b>HORÁRIO RESERVADO.</b><br><br>${svc[1]} — ${payload.date.split("-").reverse().join("/")} às ${payload.time}.<br>Cliente: ${payload.name}.<br>WhatsApp: ${payload.phone}.<br><br>O agendamento já aparece na área administrativa.</div>`;
+    try {
+      const r = await fetch("/api/appointments/authenticated", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+          serviceId: selected,
+          date: payload.date,
+          time: payload.time
+        })
+      });
+
+      const data = await r.json();
+
+      if (!r.ok) {
+        $("#bookError").textContent =
+          data.error || "Não foi possível realizar o agendamento.";
+        return;
+      }
+
+      const svc = services.find(s => s[0] === selected);
+
+      booking.innerHTML = `
+        <div class="success">
+          <b>HORÁRIO RESERVADO.</b>
+          <br><br>
+          ${svc[1]} —
+          ${payload.date.split("-").reverse().join("/")}
+          às ${payload.time}.
+          <br>
+          Cliente: ${payload.name}.
+          <br>
+          WhatsApp: ${payload.phone}.
+          <br><br>
+          O agendamento já aparece na área administrativa.
+        </div>
+      `;
+
+    } catch (err) {
+      console.error(err);
+      $("#bookError").textContent =
+        "Erro de conexão com o servidor.";
+    }
   };
 }
+
 renderBooking();
 
-const adminModal=$("#adminModal");
-document.addEventListener("keydown",e=>{if(e.key==="a"&&e.ctrlKey){e.preventDefault();adminModal.classList.add("open")}});
-$("#closeAdmin").onclick=()=>adminModal.classList.remove("open");
 
-$("#loginForm").onsubmit=async e=>{
+// ==============================
+// LOGIN DO ADMINISTRADOR
+// ==============================
+
+const adminModal = $("#adminModal");
+
+document.addEventListener("keydown", e => {
+  if (e.key === "a" && e.ctrlKey) {
+    e.preventDefault();
+    adminModal.classList.add("open");
+  }
+});
+
+$("#closeAdmin").onclick = () => {
+  adminModal.classList.remove("open");
+};
+
+$("#loginForm").onsubmit = async e => {
   e.preventDefault();
-  const r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:$("#email").value,password:$("#password").value})});
-  const d=await r.json();
-  if(!r.ok){$("#loginError").textContent=d.error;return;}
-  sessionStorage.setItem("adminToken",d.token);
-  location.href="/admin.html";
-  // ==============================
+
+  const r = await fetch("/api/admin/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: $("#email").value,
+      password: $("#password").value
+    })
+  });
+
+  const d = await r.json();
+
+  if (!r.ok) {
+    $("#loginError").textContent = d.error;
+    return;
+  }
+
+  sessionStorage.setItem("adminToken", d.token);
+
+  location.href = "/admin.html";
+};
+
+
+// ==============================
 // LOGIN E CADASTRO DO CLIENTE
 // ==============================
 
@@ -104,33 +227,45 @@ const clientSwitch = $("#clientSwitch");
 const clientSwitchText = $("#clientSwitchText");
 const clientTitle = $("#clientTitle");
 
+
+// ABRIR LOGIN
 clientLoginBtn.onclick = e => {
   e.preventDefault();
   clientModal.classList.add("open");
 };
 
+
+// FECHAR LOGIN
 closeClient.onclick = () => {
   clientModal.classList.remove("open");
 };
 
+
+// FECHAR CLICANDO FORA
 clientModal.onclick = e => {
   if (e.target === clientModal) {
     clientModal.classList.remove("open");
   }
 };
 
-// Alternar entre LOGIN e CADASTRO
+
+// ALTERNAR LOGIN / CADASTRO
 clientSwitch.onclick = () => {
-  const registering = clientRegisterForm.style.display !== "none";
+
+  const registering =
+    clientRegisterForm.style.display !== "none";
 
   if (registering) {
+
     clientRegisterForm.style.display = "none";
     clientLoginForm.style.display = "block";
 
     clientTitle.textContent = "ENTRAR";
     clientSwitchText.textContent = "Ainda não tem conta?";
     clientSwitch.textContent = "CRIAR CONTA";
+
   } else {
+
     clientLoginForm.style.display = "none";
     clientRegisterForm.style.display = "block";
 
@@ -140,8 +275,13 @@ clientSwitch.onclick = () => {
   }
 };
 
+
+// ==============================
 // LOGIN DO CLIENTE
+// ==============================
+
 clientLoginForm.onsubmit = async e => {
+
   e.preventDefault();
 
   $("#clientError").textContent = "";
@@ -150,6 +290,7 @@ clientLoginForm.onsubmit = async e => {
   const password = $("#clientPassword").value;
 
   try {
+
     const r = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -164,7 +305,8 @@ clientLoginForm.onsubmit = async e => {
     const data = await r.json();
 
     if (!r.ok) {
-      $("#clientError").textContent = data.error || "Erro ao fazer login.";
+      $("#clientError").textContent =
+        data.error || "Erro ao fazer login.";
       return;
     }
 
@@ -175,13 +317,21 @@ clientLoginForm.onsubmit = async e => {
     alert("Login realizado com sucesso!");
 
   } catch (err) {
+
     console.error(err);
-    $("#clientError").textContent = "Erro de conexão com o servidor.";
+
+    $("#clientError").textContent =
+      "Erro de conexão com o servidor.";
   }
 };
 
-// CRIAR CONTA
+
+// ==============================
+// CRIAR CONTA DO CLIENTE
+// ==============================
+
 clientRegisterForm.onsubmit = async e => {
+
   e.preventDefault();
 
   $("#registerError").textContent = "";
@@ -192,6 +342,7 @@ clientRegisterForm.onsubmit = async e => {
   const password = $("#registerPassword").value;
 
   try {
+
     const r = await fetch("/api/auth/signup", {
       method: "POST",
       headers: {
@@ -208,7 +359,8 @@ clientRegisterForm.onsubmit = async e => {
     const data = await r.json();
 
     if (!r.ok) {
-      $("#registerError").textContent = data.error || "Erro ao criar conta.";
+      $("#registerError").textContent =
+        data.error || "Erro ao criar conta.";
       return;
     }
 
@@ -219,7 +371,10 @@ clientRegisterForm.onsubmit = async e => {
     alert("Conta criada com sucesso!");
 
   } catch (err) {
+
     console.error(err);
-    $("#registerError").textContent = "Erro de conexão com o servidor.";
+
+    $("#registerError").textContent =
+      "Erro de conexão com o servidor.";
   }
 };
