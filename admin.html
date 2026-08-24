@@ -8,13 +8,13 @@
   <div class="calendar" id="calendar"></div>
 </div>
 <script>
-const token=sessionStorage.getItem("adminToken");
+const token=localStorage.getItem("barbearia_admin_token");
 if(!token) location.href="/";
 const cal=document.getElementById("calendar");
 function money(n){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(n)}
 async function load(){
  const r=await fetch("/api/admin/appointments",{headers:{Authorization:"Bearer "+token}});
- if(r.status===401){sessionStorage.removeItem("adminToken");location.href="/";return}
+ if(r.status===401){localStorage.removeItem("barbearia_admin_token");location.href="/";return}
  const data=await r.json(), today=new Date().toISOString().slice(0,10);
  document.getElementById("today").textContent=data.filter(a=>a.date===today&&a.status!=="cancelado").length;
  document.getElementById("upcoming").textContent=data.filter(a=>a.date>=today&&a.status!=="cancelado").length;
@@ -24,7 +24,7 @@ async function load(){
 }
 async function status(id,status){await fetch("/api/admin/appointments/"+id,{method:"PATCH",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({status})});load()}
 async function removeAppt(id){if(confirm("Excluir este agendamento?")){await fetch("/api/admin/appointments/"+id,{method:"DELETE",headers:{Authorization:"Bearer "+token}});load()}}
-document.getElementById("logout").onclick=()=>{sessionStorage.removeItem("adminToken");location.href="/"}
+document.getElementById("logout").onclick=()=>{localStorage.removeItem("barbearia_admin_token");location.href="/"}
 load();
 </script>
 </body></html>
