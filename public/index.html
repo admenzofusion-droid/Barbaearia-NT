@@ -14,6 +14,7 @@
     <a href="#servicos">SERVIÇOS</a>
     <a href="#manifesto">MANIFESTO</a>
     <a href="#contato">CONTATO</a>
+    <a href="#" id="clientLoginBtn">ENTRAR</a>
     <a class="outline" href="#agendar">AGENDAR</a>
   </nav>
 </header>
@@ -63,15 +64,36 @@
 
 <div class="modal" id="adminModal">
   <div class="modal-card">
-    <button class="close" id="closeAdmin">×</button>
-    <p class="eyebrow">/ ÁREA RESTRITA</p>
-    <h2>LOGIN</h2>
-    <form id="loginForm">
-      <input id="email" type="email" placeholder="E-mail" required>
-      <input id="password" type="password" placeholder="Senha" required>
+    <button class="close" id="closeClient">×</button>
+
+    <p class="eyebrow">/ ÁREA DO CLIENTE</p>
+    <h2 id="clientTitle">ENTRAR</h2>
+
+    <form id="clientLoginForm">
+      <input id="clientEmail" type="email" placeholder="E-mail" required>
+      <input id="clientPassword" type="password" placeholder="Senha" required>
+
       <button class="button light" type="submit">ENTRAR</button>
-      <p id="loginError" class="error"></p>
+
+      <p id="clientError" class="error"></p>
     </form>
+
+    <form id="clientRegisterForm" style="display:none;">
+      <input id="registerName" type="text" placeholder="Nome completo" required>
+      <input id="registerEmail" type="email" placeholder="E-mail" required>
+      <input id="registerPassword" type="password" placeholder="Senha" required>
+
+      <button class="button light" type="submit">CRIAR CONTA</button>
+
+      <p id="registerError" class="error"></p>
+    </form>
+
+    <p style="margin-top:20px;">
+      <span id="clientSwitchText">Ainda não tem conta?</span>
+      <button type="button" id="clientSwitch" class="link-button">
+        CRIAR CONTA
+      </button>
+    </p>
   </div>
 </div>
 
