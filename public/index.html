@@ -10,6 +10,7 @@
 <body>
 
 <header class="topbar">
+
   <a class="logo" href="#home">BARBEARIA NT</a>
 
   <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">
@@ -22,21 +23,34 @@
     <a href="#servicos">SERVIÇOS</a>
     <a href="#manifesto">MANIFESTO</a>
     <a href="#contato">CONTATO</a>
-    <button type="button" id="clientLoginBtn">ENTRAR</button>
-    <a class="outline" href="#agendar">AGENDAR</a>
+
+    <button type="button" id="clientLoginBtn">
+      ENTRAR
+    </button>
+
+    <a class="outline" href="#agendar">
+      AGENDAR
+    </a>
   </nav>
+
 </header>
 
 
 <main>
 
 <section class="hero" id="home">
+
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <p class="eyebrow">— EST. 2025 — CORTES · BARBA · NEVOU · LUZES</p>
 
-    <h1>BARBEARIA<br>NT</h1>
+    <p class="eyebrow">
+      — EST. 2025 — CORTES · BARBA · NEVOU · LUZES
+    </p>
+
+    <h1>
+      BARBEARIA<br>NT
+    </h1>
 
     <p>
       Onde o corte vira assinatura.<br>
@@ -50,7 +64,9 @@
     <a class="button ghost" href="#servicos">
       VER SERVIÇOS
     </a>
+
   </div>
+
 </section>
 
 
@@ -66,6 +82,7 @@
 
 
 <section class="intro" id="servicos">
+
   <p class="eyebrow">/ NOSSOS SERVIÇOS</p>
 
   <h2>O QUE FAZEMOS</h2>
@@ -74,6 +91,7 @@
     Do corte na tesoura à descoloração completa.
     Cada serviço com preço justo e acabamento de assinatura.
   </p>
+
 </section>
 
 
@@ -135,22 +153,28 @@
 </main>
 
 
-<!-- ==============================
-     MODAL DO CLIENTE
-     ============================== -->
+<!-- =========================
+     CONTA DO CLIENTE
+     ========================= -->
 
 <div class="modal" id="clientModal">
 
   <div class="modal-card">
 
-    <button class="close" id="closeClient">×</button>
+    <button class="close" id="closeClient">
+      ×
+    </button>
 
-    <p class="eyebrow">/ ÁREA DO CLIENTE</p>
+    <p class="eyebrow">
+      / ÁREA DO CLIENTE
+    </p>
 
-    <h2 id="clientTitle">ENTRAR</h2>
+    <h2 id="clientTitle">
+      ENTRAR
+    </h2>
 
 
-    <!-- LOGIN DO CLIENTE -->
+    <!-- LOGIN -->
 
     <form id="clientLoginForm">
 
@@ -177,7 +201,7 @@
     </form>
 
 
-    <!-- CADASTRO DO CLIENTE -->
+    <!-- CADASTRO -->
 
     <form id="clientRegisterForm" style="display:none;">
 
@@ -218,9 +242,35 @@
     </form>
 
 
+    <!-- MINHA CONTA -->
+
+    <div id="clientAccount" style="display:none;">
+
+      <h3>MINHA CONTA</h3>
+
+      <p id="clientWelcome"></p>
+
+      <div id="myAppointments">
+        Carregando seus agendamentos...
+      </div>
+
+      <button
+        type="button"
+        class="button light"
+        id="logoutClient"
+      >
+        SAIR DA CONTA
+      </button>
+
+    </div>
+
+
     <!-- TROCAR LOGIN / CADASTRO -->
 
-    <p style="margin-top:20px;">
+    <p
+      id="clientSwitchArea"
+      style="margin-top:20px;"
+    >
 
       <span id="clientSwitchText">
         Ainda não tem conta?
@@ -241,19 +291,25 @@
 </div>
 
 
-<!-- ==============================
-     MODAL DO ADMINISTRADOR
-     ============================== -->
+<!-- =========================
+     LOGIN ADMINISTRATIVO
+     ========================= -->
 
 <div class="modal" id="adminModal">
 
   <div class="modal-card">
 
-    <button class="close" id="closeAdmin">×</button>
+    <button class="close" id="closeAdmin">
+      ×
+    </button>
 
-    <p class="eyebrow">/ ÁREA RESTRITA</p>
+    <p class="eyebrow">
+      / ÁREA RESTRITA
+    </p>
 
-    <h2>LOGIN</h2>
+    <h2>
+      LOGIN
+    </h2>
 
     <form id="loginForm">
 
